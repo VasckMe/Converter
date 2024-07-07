@@ -1,0 +1,40 @@
+name: CustomBuildWorkflow
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        venv\Scripts\Activate.ps1
+        pip install -r requirements.txt
+        ./installResources.ps1
+
+    - name: Build EXE
+      run: |
+        venv\Scripts\Activate.ps1
+        pyinstaller --onefile main.py
+
+    - name: Upload EXE artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: my_program
+        path: dist/main.exe
