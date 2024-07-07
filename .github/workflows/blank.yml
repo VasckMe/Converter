@@ -2,11 +2,13 @@ name: CustomBuildWorkflow
 
 on:
   schedule:
+    # Automatyczne uruchomienie raz w tygodniu (np. w poniedziałek o 12:00)
     - cron: '0 12 * * 1'
   push:
+    # Automatyczne uruchomienie po pushowaniu na mastera
     branches:
       - main
-  workflow_dispatch:
+  workflow_dispatch: # Ręczne uruchomienie przez użytkownika
 
 jobs:
   build:
@@ -14,23 +16,23 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: '3.x'
 
     - name: Install dependencies
       run: |
         python -m venv venv
-        venv\Scripts\Activate.ps1
+        .\venv\Scripts\Activate.ps1
         pip install -r requirements.txt
-        ./installResources.ps1
+        .\installResources.ps1
 
     - name: Build EXE
       run: |
-        venv\Scripts\Activate.ps1
+        .\venv\Scripts\Activate.ps1
         pyinstaller --onefile main.py
 
     - name: Upload EXE artifact
