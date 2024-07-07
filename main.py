@@ -22,7 +22,7 @@ def load_file(filepath):
     elif filepath.endswith('.yaml') or filepath.endswith('.yml'):
         return load_yaml(filepath)
     else:
-        raise ValueError('Nieobsługiwany format pliku.')
+        raise ValueError('Load Error: The format is out of the service')
 
 # json
 def load_json(filepath):
@@ -53,29 +53,36 @@ def save_file(data, filepath):
     elif filepath.endswith('.yaml') or filepath.endswith('.yml'):
         save_yaml(data, filepath)
     else:
-        raise ValueError('Nieobsługiwany format pliku.')
+        raise ValueError('Save Error: The format is out of the service')
 
 # json
 def save_json(data, filepath):
     with open(filepath, 'w') as file:
         json.dump(data, file, indent=4)
-    print(f'Dane zapisane do pliku: {filepath}')
+    print(f'Data saved to file: {filepath}')
 
 # xml
 def save_xml(data, filepath):
     with open(filepath, 'w') as file:
         xml_str = xmltodict.unparse(data, pretty=True)
         file.write(xml_str)
-    print(f'Dane zapisane do pliku: {filepath}')
+    print(f'Data saved to file: {filepath}')
 
 # yml
 def save_yaml(data, filepath):
     with open(filepath, 'w') as file:
         yaml.dump(data, file)
-    print(f'Dane zapisane do pliku: {filepath}')
+    print(f'Data saved to file: {filepath}')
+
+# Main
 
 def main():
-    print("-====    Main function    ====-")
+    args = parse_arguments()
+    try:
+        data = load_file(args.input)
+        save_file(data, args.output)
+    except Exception as e:
+        print(f'Oops, error: {e}')
 
 if __name__ == '__main__':
     main()
