@@ -2,13 +2,11 @@ name: CustomBuildWorkflow
 
 on:
   schedule:
-    # Automatyczne uruchomienie raz w tygodniu (np. w poniedziałek o 12:00)
     - cron: '0 12 * * 1'
   push:
-    # Automatyczne uruchomienie po pushowaniu na mastera
     branches:
       - main
-  workflow_dispatch: # Ręczne uruchomienie przez użytkownika
+  workflow_dispatch:
 
 jobs:
   build:
@@ -27,7 +25,6 @@ jobs:
       run: |
         python -m venv venv
         .\venv\Scripts\Activate.ps1
-        ./installResources.sh1
 
     - name: Install additional resources
       run: ./installResources.sh
