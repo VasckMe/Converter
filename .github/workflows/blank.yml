@@ -23,12 +23,15 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install dependencies
+    - name: Create and activate environment
       run: |
         python -m venv venv
         .\venv\Scripts\Activate.ps1
-        pip install -r requirements.txt
         ./installResources.sh1
+
+    - name: Install additional resources
+      run: ./installResources.sh
+      shell: bash
 
     - name: Build EXE
       run: |
